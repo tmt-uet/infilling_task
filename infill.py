@@ -76,6 +76,7 @@ class INFILL:
             self.additional_tokens_to_ids,
             context_ids,
             num_infills=order)
+        print('generated', generated)
         for g in generated:
             result.append(str(ilm.tokenize_util.decode(g, tokenizer)))
         return result

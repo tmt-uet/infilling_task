@@ -59,8 +59,8 @@ def infilling_word():
     if order.isdigit() == False:
         return error_handle(2, "ORDER PHẢI LÀ CHỮ SỐ", "ERROR_SERVER")
     order = int(order)
-    if order > 15:
-        return error_handle(2, "CHỈ ĐƯỢC TRUYỀN ORDER NHỎ HƠN 15", "ERROR_SERVER")
+    if order > 30:
+        return error_handle(2, "CHỈ ĐƯỢC TRUYỀN ORDER NHỎ HƠN 30", "ERROR_SERVER")
     # try:
     results = str(app.config['infill'].infilling_word(sentence, order, mask))
     print(results)
