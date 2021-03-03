@@ -15,10 +15,8 @@ def mask_cls_str_to_type(mask_cls):
 
 
 def masked_spans_bounds_valid(masked_spans, d_len):
-  for span_off, span_len in [s[-2:] for s in masked_spans]:
-    if span_off < 0 or span_len <= 0 or span_off+span_len > d_len:
-      return False
-  return True
+  return not any(span_off < 0 or span_len <= 0 or span_off + span_len > d_len
+                 for span_off, span_len in [s[-2:] for s in masked_spans])
 
 
 def masked_spans_overlap(masked_spans):
@@ -26,10 +24,9 @@ def masked_spans_overlap(masked_spans):
   last_len = None
   overlap = False
   for span_off, span_len in [s[-2:] for s in sorted(masked_spans, key=lambda x: x[-2])]:
-    if last_off is not None:
-      if span_off < last_off + last_len:
-        overlap = True
-        break
+    if last_off is not None and span_off < last_off + last_len:
+      overlap = True
+      break
     last_off = span_off
     last_len = span_len
   return overlap
@@ -96,7 +93,7 @@ def _apply_masked_spans(
 
   for i, (span_type, _, span_len) in enumerate(masked_spans):
     span_off = context.index(None)
-    assert all([i is None for i in context[span_off:span_off+span_len]])
+    assert all(i is None for i in context[span_off:span_off+span_len])
     del context[span_off:span_off+span_len]
     substitution = mask_type_to_substitution[span_type]
     if type(substitution) == list:
