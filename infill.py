@@ -10,6 +10,7 @@ MODEL_DIR = 'models'
 MASK_CLS = 'ilm.mask.hierarchical.MaskHierarchical'
 result = []
 tokenizer = ilm.tokenize_util.Tokenizer.GPT2
+import os
 
 datamodel = 'models/pytorch_model.bin'
 
@@ -22,7 +23,8 @@ context = 'The sun is shining. _ All the children want to swim.'
 class INFILL:
     def __init__(self):
         super().__init__()
-        device = 'cpu'
+        os.environ["CUDA_VISIBLE_DEVICES"]="1"
+        device = 'cuda'
         self.model = GPT2LMHeadModel.from_pretrained(MODEL_DIR)
         self.model.eval()
         self.model.to(device)
